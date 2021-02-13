@@ -9,6 +9,8 @@ import com.codepath.debuggingchallenges.R;
 
 public class ToolbarActivity extends AppCompatActivity {
 
+    public static final String TAG = "ToolbarActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
