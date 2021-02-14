@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.codepath.debuggingchallenges.R;
 
 public class ChangeBackgroundActivity extends AppCompatActivity {
-
+    // Used for debugging purposes
     public static final String TAG = "ChangeBackgroundActivity";
+
+    // Predefined Global Variable
     private int oldColor = Color.BLUE;
 
     @Override
@@ -27,7 +29,7 @@ public class ChangeBackgroundActivity extends AppCompatActivity {
         View mainView = findViewById(android.R.id.content);
         mainView.setBackgroundColor(getNextColor());
         Log.i(TAG, "Clicked");
-        // Toast.makeText(TAG, "Aasdf", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
     }
 
     private int getNextColor() {

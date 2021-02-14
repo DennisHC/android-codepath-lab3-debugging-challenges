@@ -2,6 +2,7 @@ package com.codepath.debuggingchallenges.activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,13 +15,14 @@ import com.codepath.debuggingchallenges.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import okhttp3.Headers;
 
 public class MoviesActivity extends AppCompatActivity {
-
+    public static final String TAG = "MoviesActivity";
     private static final String API_KEY = "a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
     RecyclerView rvMovies;
@@ -44,14 +46,27 @@ public class MoviesActivity extends AppCompatActivity {
 
 
     private void fetchMovies() {
-        String url = " https://api.themoviedb.org/3/movie/now_playing?api_key=";
+        String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + API_KEY;
+        Log.i(TAG, url);
+
         AsyncHttpClient client = new AsyncHttpClient();
+
+
+
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON response) {
+                // Debug message letting us know we made it to this function
+                Log.d(TAG, "onSuccess");
+                // JSONObject jsonObject = response.jsonObject;
                 try {
                     JSONArray moviesJson = response.jsonObject.getJSONArray("results");
-                    movies = Movie.fromJSONArray(moviesJson);
+
+                    // Debug message (for RESULTS)
+                    Log.i(TAG, "Results: " + moviesJson);
+                    movies.addAll(Movie.fromJSONArray(moviesJson));
+                    adapter.notifyDataSetChanged();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -60,6 +75,7 @@ public class MoviesActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(MoviesActivity.class.getSimpleName(), "Error retrieving movies: ", throwable);
+                // Toast.makeText(this, "Error retrieving movies:", Toast.LENGTH_SHORT).show();
             }
         });
     }
